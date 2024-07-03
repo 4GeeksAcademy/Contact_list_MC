@@ -23,7 +23,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			fetchCreateAgenda: async () => {
 				try {
-					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez', {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/marcos', {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json"
@@ -39,7 +39,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			fetchCreateContact:  async (name,email,phone,address) => {
 				const actions = getActions();
 				try {
-					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez/contacts', {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/marcos/contacts', {
 						method: "POST",
 						body: JSON.stringify({name: name,email: email,phone: phone,address:address}),
 						headers: {
@@ -55,7 +55,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			fetchGetContacts: async () => {
 				try {
-					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez/contacts', {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/marcos/contacts', {
 						method: "GET"
 					});
 					const data = await resp.json();
@@ -68,7 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			fetchEditContact: async (id,name,email,phone,address) => {
 				const actions = getActions();
 				try {
-					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/javierdiez/contacts/${id}`, {
+					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/marcos/contacts/${id}`, {
 						method: "PUT",
 						body: JSON.stringify({name: name,email: email,phone: phone,address:address}),
 						headers: {
@@ -91,7 +91,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			fetchDeleteContact: async (id) => {
 				const actions = getActions();
 				try {
-					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/javierdiez/contacts/${id}`, {
+					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/marcos/contacts/${id}`, {
 						method: "DELETE",
 						headers: {
 							"Content-Type": "application/json"
