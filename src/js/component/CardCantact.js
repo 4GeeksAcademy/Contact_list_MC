@@ -1,89 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React from "react";
+import '../../styles/home.css'
 import { Context } from "../store/appContext";
-import "../../styles/demo.css";
-import getState from "../store/flux";
+import { Link } from "react-router-dom";
 
-export function CardContact() {
-  const { store, actions } = useContext(Context);
-  const navigate = useNavigate();
-  const params = useParams();
-  const handleClick = (id) => {
-    console.log(store.dataCard.name);
-    console.log(id);
 
-    navigate(`/addContact/${id}`);
-  };
+export const CardContact = ({ contactName, email, phone, address, edit, remove}) => {
+    return (
+        <div className="row border p-3 mb-5">
+            <div className="col-3">
+                <img src="https://media.licdn.com/dms/image/C4E03AQHLO54DdH3cpQ/profile-displayphoto-shrink_800_800/0/1568739717500?e=1724889600&v=beta&t=OJB6bAw2bJa1YNFUd18U8jH-oDkXC9hifQVR3bvaQ9s" alt="Javier Diez" className="rounded-circle w-50" />
+            </div>
+            <div className="col-8">
+                <p className="fs-3">{contactName}</p>
+                <div className="d-flex align-items-center mt-2"><i className="fa-solid fa-envelope"></i><p className="fs-5 ms-4 text-secondary">{email}</p></div>
+                <div className="d-flex align-items-center mt-2"><i className="fa-solid fa-phone"></i><p className="ms-4 text-secondary">{phone}</p></div>
+                <div className="d-flex align-items-center mt-2"><i className="fa-solid fa-location-dot"></i><p className="ms-4 text-secondary">{address}</p></div>
+            </div>
+            <div className="col-1 text-end">
+            <Link to="/edit_contact"><button className="btn" onClick={edit}><i className="fa-solid fa-pencil"></i></button></Link>
+            <button className="btn" onClick={remove}><i className="fa-solid fa-trash-can"></i></button>
+            </div>
 
-  return (
-    <div className="container">
-      <ul className="list-unstyled">
-        {store.contacts === undefined ? (
-          <p className="text-center fs-3">No hay contactos que mostrar</p>
-        ) : (
-          store.contacts.map((contact) => (
-            <li
-              key={contact.id}
-              className="card p-3 d-flex flex-row align-items-center"
-            >
-              <div className="me-3">
-                <i className="fas fa-user"></i>
-              </div>
-              <div className="flex-grow-1 mx-auto">
-                <h3 className="mb-1 ml-2">
-                  <i className="fas fa-thumbtack"></i>
-                  <span className="ms-2">
-                    <strong>{contact.name}</strong>
-                  </span>
-                </h3>
-                <p className="mb-1">
-                  <i
-                    className="far fa-paper-plane"
-                    style={{ color: "black" }}
-                  ></i>
-                  <span className="ms-2">{contact.email}</span>
-                </p>
-                <p className="mb-1">
-                  <i
-                    className="fas fa-mobile-alt fa-lg"
-                    style={{ color: "black" }}
-                  ></i>
-                  <span className="ms-2">{contact.phone}</span>
-                </p>
-                <p className="mb-0">
-                  <i className="far fa-envelope" style={{ color: "black" }}></i>
-                  <span className="ms-2">{contact.address}</span>
-                </p>
-              </div>
-              <div className="ms-5 mx-3 d-flex gap-2">
-                <Link to={`/addcontact/${contact.id}`}>
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    onClick={() => handleClick(contact.id)}
-                  >
-                    <i className="fas fa-marker"></i>
-                  </button>
-                </Link>
-                <button
-                  type="button"
-                  className="btn btn-warning"
-                  onClick={() => actions.deleteContact(contact.id)}
-                >
-                  <i className="fas fa-trash-alt"></i>
-                </button>
-              </div>
-            </li>
-          ))
-        )}
-      </ul>
-      <button
-        className="btn btn-warning mt-3"
-        type="button"
-        onClick={() => navigate("/")}
-      >
-        Back Home
-      </button>
-    </div>
-  );
+        </div>
+    )
 }

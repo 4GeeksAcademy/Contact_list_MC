@@ -1,198 +1,113 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-	  store: {
-		contacts: [],
-		username: "",
-		dataCard: {
-		  name: "",
-		  email: "",
-		  phone: "",
-		  adress: "",
-		},
-	  },
-	  actions: {
-		// Use getActions to call a function within a fuction
-		//const actions = getActions();
-		// loadContactList: async () => {
-		//   try {
-		//     const response = await fetch(
-		//       //"https://playground.4geeks.com/contact/agendas?offset=0&limit=100",
-		//       {
-		//         method: "GET",
-		//         headers: { accept: "aplication/json" },
-		//       }
-		//     );
-		//     const data = await response.json();
-		//     console.log(data);
-		//   } catch (error) {
-		//     console.log(error);
-		//   }
-		// },
-  
-		//Actualizando la info del flux
-  
-		uploadData: (data) => {
-		  const store = getStore();
-		  const actions = getActions();
-		  setStore({ contacts: [...store.contacts, data] });
-		  //actions.createNewContact(data);
-		},
-  
-		//Volcando lista de contactos
-  
-		consultContactList: async () => {
-		  const store = getStore();
-		  try {
-			const response = await fetch(
-			  `https://playground.4geeks.com/contact/agendas/${store.username}`,
-			  {
-				method: "GET",
-				headers: { accept: "aplication/json" },
-			  }
-			);
-			const data = await response.json();
-			console.log(data);
-			if (!data) return;
-			setStore({ contacts: data.contacts });
-		  } catch (error) {
-			console.log(error);
-		  }
-		},
-  
-		//Creando nueva agenda con nombre de usuario 
-  
-		createUser: async (slug) => {
-		  console.log(slug);
-  
-		  try {
-			const response = await fetch(
-			  `https://playground.4geeks.com/contact/agendas/${slug}`,
-			  {
-				method: "POST",
-				headers: { accept: "application/json" },
-			  }
-			);
-			const data = await response.json();
-			setStore("");
-			console.log(data);
-			alert("Usuario creado");
-		  } catch (error) {
-			console.log(error);
-		  }
-		},
-  
-		//Almacenamos el user
-  
-		addUserToStore: (user) => {
-		  const store = getStore();
-		  setStore({ username: user });
-		  console.log(store.username);
-		},
-  
-		//Añadiendo nuevo contacto a la agenda 
-  
-		createNewContact: async (list) => {
-		  const store = getStore();
-		  const actions = getActions();
-		  console.log(store);
-		  try {
-			const response = await fetch(
-			  `https://playground.4geeks.com/contact/agendas/${store.username}/contacts`,
-			  {
-				method: "POST",
-				headers: {
-				  accept: "application/json",
-				  "Content-Type": "application/json",
+		store: {
+			demo: [
+				{
+					title: "FIRST",
+					background: "white",
+					initial: "white"
 				},
-  
-				body: JSON.stringify(list),
-			  }
-			);
-			const data = await response.json();
-			getStore("");
-			console.log(data);
-		  } catch (error) {
-			console.log(error);
-		  }
+				{
+					title: "SECOND",
+					background: "white",
+					initial: "white"
+				}
+			],
+			contacts: [],
+			selectedContact: {}
 		},
-  
-		//Editando contacto 
-		editContact: async (id, editedCard) => {
-		  const store = getStore();
-		  const actions = getActions();
-  
-		  try {
-			const response = await fetch(
-			  `https://playground.4geeks.com/contact/agendas/${store.username}/contacts/${id}`,
-			  {
-				method: "PUT",
-				headers: {
-				  accept: "application/json",
-				  "Content-Type": "application/json",
-				},
-				body: JSON.stringify(editedCard),
-			  },
-			  console.log(editedCard)
-			);
-			const updatedCard = await response.json();
-			console.log(updatedCard);
-			const editList = store.contacts.map((contact) =>
-			  contact.id === id ? updatedCard : contact
-			);
-			setStore({ contacts: editList });
-			actions.consultContactList();
-		  } catch (error) {
-			console.log(error);
-			alert("No se ha podido editar el contacto");
-		  }
-		},
-  
-		//Borrando contacto de la agenda 
-  
-		deleteContact: async (id) => {
-		  const store = getStore();
-		  try {
-			const response = await fetch(
-			  `https://playground.4geeks.com/contact/agendas/${store.username}/contacts/${id}`,
-			  {
-				method: "DELETE",
-				headers: {
-				  accept: "application/json",
-				},
-			  }
-			);
-			if (response.ok) {
-			  const newListContacts = store.contacts.filter(
-				(contact) => contact.id !== id
-			  );
-			  setStore({
-				contacts: newListContacts,
-			  });
-			  console.log(store.contacts);
-			  alert("Se ha eliminado el contacto de tu agenda");
-			}
-		  } catch (error) {
-			console.log(error);
-			alert("No se ha podido eliminar el contacto");
-		  }
-		},
-  
-		// changeColor: (index, color) => {
-		//   //get the store
-		//   const store = getStore();
-  
-		//   //we have to loop the entire demo array to look for the respective index
-		//   //and change its color
-		//   const demo = store.demo.map((elm, i) => {
-		//     if (i === index) elm.background = color;
-		//     return elm;
-		//   });
-  
-		//   //reset the global store
-		//   setStore({ demo: demo });
-		// },
-	  },
+		
+
+		actions: {
+			
+
+			fetchCreateAgenda: async () => {
+				try {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez', {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+
+			fetchCreateContact:  async (name,email,phone,address) => {
+				const actions = getActions();
+				try {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez/contacts', {
+						method: "POST",
+						body: JSON.stringify({name: name,email: email,phone: phone,address:address}),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					actions.fetchGetContacts();
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			fetchGetContacts: async () => {
+				try {
+					const resp = await fetch('https://playground.4geeks.com/contact/agendas/javierdiez/contacts', {
+						method: "GET"
+					});
+					const data = await resp.json();
+					console.log("Datos recibidos de la API:", data); 
+						setStore({ contacts: data.contacts}); 
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			fetchEditContact: async (id,name,email,phone,address) => {
+				const actions = getActions();
+				try {
+					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/javierdiez/contacts/${id}`, {
+						method: "PUT",
+						body: JSON.stringify({name: name,email: email,phone: phone,address:address}),
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					setStore({ selectedContact: data});
+					console.log('Esta es la data de PUT:', data);
+					actions.fetchGetContacts();
+				} catch (error) {
+					console.log(error);
+				}
+			},
+			singleContact: (id) =>{
+				const store = getStore();
+				const contactoElegido = store.contacts.filter((contacto) => contacto.id === id)
+				setStore({selectedContact: contactoElegido});
+			},
+			fetchDeleteContact: async (id) => {
+				const actions = getActions();
+				try {
+					const resp = await fetch(`https://playground.4geeks.com/contact/agendas/javierdiez/contacts/${id}`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (resp.ok) {
+						await resp.text();
+						actions.fetchGetContacts();
+					}
+					throw new Error("No se pudo borrar el contacto");
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		}
 	};
-  };
-  
-  export default getState;
+};
+
+export default getState;

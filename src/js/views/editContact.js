@@ -5,18 +5,27 @@ import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
-export const AddContact = () => {
+export const EditContact = () => {
     const { store, actions } = useContext(Context);
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [address, setAddress] = useState('')
-    // const [contact, setContact] = useState({
-    //     name: name,
-    //     email: email,
-    //     phone: phone,
-    //     address: address
-    // });
+    const [id, setId] = useState('')
+
+    useEffect(() =>{
+        console.log('Log de store.selectedContact:',store.selectedContact[0].name);
+       
+        if(store.selectedContact){
+            setName(store.selectedContact[0].name || '');
+            setEmail(store.selectedContact[0].email || '');
+            setPhone(store.selectedContact[0].phone || '');
+            setAddress(store.selectedContact[0].address || '');
+            setId(store.selectedContact[0].id || '');
+        }
+     
+
+    },[store.selectedContact])
 
     const handleChangeName = (e) => {
         setName(e.target.value)
@@ -34,21 +43,21 @@ export const AddContact = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e,name,email,phone,address) => {
+    const handleEdit = (e,id,name,email,phone,address) => {
         e.preventDefault();
-        actions.fetchCreateContact(name,email,phone,address);
-        console.log(name,email,phone,address);
+        actions.fetchEditContact(id,name,email,phone,address);
+        console.log('Datos del handelEdit:', name,email,phone,address);
         navigate("/home");
     }
 
-
     return (
         <div className="container">
-            <h1 className="text-center mb-5 mt-5">Agregar nuevo Contacto</h1>
-            <form className="row g-3" onSubmit={(e) => handleSubmit(e,name,email,phone,address)}>
+            <h1 className="text-center mb-5 mt-5">Editar Contacto</h1>
+            
+            <form className="row g-3" onSubmit={(e) => handleEdit(e,id,name,email,phone,address)}>
                 <div className="col-12">
                     <label htmlFor="fullName" className="form-label">Nombre completo</label>
-                    <input type="text" className="form-control" onChange={handleChangeName} id="fullName" value={name}/>
+                    <input type="text" className="form-control" name="fullNameContact" onChange={handleChangeName} id="fullName" value={name}/>
                 </div>
                 <div>
                     <label htmlFor="inputEmail4" className="form-label">Email</label>
@@ -61,6 +70,10 @@ export const AddContact = () => {
                 <div className="col-12">
                     <label htmlFor="inputAddress" className="form-label">Address</label>
                     <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St" onChange={handleChangeAddress} value={address}/>
+                </div>
+                <div className="col-12">
+                    <label htmlFor="inputAddress" className="form-label">ID</label>
+                    <input type="text" className="form-control" id="inputId" placeholder="ID" value={id} disable/>
                 </div>
                 <div className="col-12">
                     <button type="submit" className="btn btn-primary btn-lg w-100">Guardar</button>
